@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To-do list-->
+        <!--Список дел-->
         <scene sceneID="w7U-l3-XvW">
             <objects>
                 <tableViewController id="YoS-wd-Ihc" customClass="TableViewController" customModule="CoreDataDemo" customModuleProvider="target" sceneMemberID="viewController">
@@ -34,7 +34,7 @@
                             <outlet property="delegate" destination="YoS-wd-Ihc" id="TR2-6O-UcK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="To-do list" id="wXc-hS-XUD">
+                    <navigationItem key="navigationItem" title="Список дел" id="wXc-hS-XUD">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Yzt-FO-1V6">
                             <connections>
                                 <action selector="addTask:" destination="YoS-wd-Ihc" id="k46-X5-gbP"/>
