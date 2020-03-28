@@ -18,21 +18,15 @@ class TableViewController: UITableViewController {
         let OK = UIAlertAction(title: "Ok", style: .default) { (action) in
             let textField = AC.textFields?[0]
             self.saveTask(taskToDo: (textField?.text)!)
-//            self.toDoItems.insert((textField.text)!, at: 0)
             self.tableView.reloadData()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-//        let about = UIAlertAction(title: "About", style: .default) { (action) in
-//            guard let text = AC.textFields?[0].text else { return }
-//            print(text)
-//        }
         
         AC.addTextField {
             textField in
         }
         
         AC.addAction(OK)
-//        AC.addAction(about)
         AC.addAction(cancel)
         present(AC, animated: true, completion: nil)
     }
@@ -64,6 +58,18 @@ class TableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (_, _) in
+            
+            self.deleteTask(indexPath: indexPath)
+            self.toDoItems.remove(at: indexPath.row)
+            
+            tableView.reloadData()
+        }
+        
+        return [deleteAction]
+    }
+        
     private func saveTask(taskToDo: String) {
         //Обращаемся к AppDelegate
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -76,12 +82,32 @@ class TableViewController: UITableViewController {
         let taskObject = NSManagedObject(entity: entity!, insertInto: context) as! Task
         
         taskObject.taskToDo = taskToDo
-        print(taskObject)
         
         do {
             try context.save()
             toDoItems.append(taskObject)
             print("Save object")
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func deleteTask(indexPath: IndexPath) {
+        let task = self.toDoItems[indexPath.row]
+        
+        //Обращаемся к AppDelegate и контексту
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
+        do {
+            context.delete(task)
+            print("Object deleted")
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        do {
+            try context.save()
         } catch {
             print(error.localizedDescription)
         }
